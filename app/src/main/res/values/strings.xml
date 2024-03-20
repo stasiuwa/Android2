@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">LowcaAndroidow</string>
+    <string name="lab1">Lab1</string>
+    <string name="lab2">Lab2</string>
+    <string name="lab3">Lab3</string>
+    <string name="lab4">Lab4</string>
+    <string name="menuTittle">Android Laboratorium</string>
+    <string name="lab1Activity">Laboratorium 1</string>
+    <string name="formName">Imię:</string>
+    <string name="fromNameHint">wprowadz imie</string>
+    <string name="fromGradesAmountHint">wprowadz liczbe ocen (5–15)</string>
+    <string name="formSurname">Nazwisko:</string>
+    <string name="formSurnameHint">wprowadz nazwisko</string>
+    <string name="formGradesAmount">Liczba ocen:</string>
+    <string name="gradesBigCap">OCENY</string>
+</resources>
