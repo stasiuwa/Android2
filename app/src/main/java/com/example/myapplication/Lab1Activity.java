@@ -2,12 +2,14 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Lab1Activity extends AppCompatActivity {
@@ -15,7 +17,7 @@ public class Lab1Activity extends AppCompatActivity {
     Button gradesButton;
     EditText name, surname, grades;
 
-    Boolean[] showButton = {false, false, false};
+    boolean[] showButton = {false, false, false};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -76,7 +78,47 @@ public class Lab1Activity extends AppCompatActivity {
                 }
             }
         });
+        gradesButton.setOnClickListener( view -> {
+            Intent intent = new Intent(Lab1Activity.this, Lab2Activity.class);
 
+            Bundle sendData = new Bundle();
+            sendData.putInt("gradesAmount", Integer.parseInt(grades.getText().toString()));
+            intent.putExtras(sendData);
+            setResult(RESULT_OK, intent);
+            finish();
+
+            startActivity(intent);
+        });
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+
+        name = findViewById(R.id.name);
+        surname = findViewById(R.id.surname);
+        grades = findViewById(R.id.grades);
+
+        outState.putString("name", name.getText().toString());
+        outState.putString("surname", surname.getText().toString());
+        outState.putString("grades", grades.getText().toString());
+        outState.putBooleanArray("buttonVis", showButton);
+
+        super.onSaveInstanceState(outState);
+    }
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onRestoreInstanceState(savedInstanceState);
+
+        name = findViewById(R.id.name);
+        surname = findViewById(R.id.surname);
+        grades = findViewById(R.id.grades);
+
+
+        name.setText(savedInstanceState.getString("name"));
+        surname.setText(savedInstanceState.getString("surname"));
+        grades.setText(savedInstanceState.getString("grades"));
+        this.showButton = savedInstanceState.getBooleanArray("buttonVis");
+
+        showButton();
     }
     private void showButton(){
         boolean allTrue = true;
@@ -91,24 +133,5 @@ public class Lab1Activity extends AppCompatActivity {
         } else {
             gradesButton.setVisibility(View.INVISIBLE);
         }
-    }
-    private boolean validation() {
-//        int gradesValue = Integer.parseInt(grades.getText().toString());
-        if(name.length() == 0) {
-            name.setError("Podaj imie!");
-            return false;
-        }
-        if (surname.length() == 0){
-            surname.setError("Podaj nazwisko!");
-            return false;
-        }
-        if (grades.length() == 0) {
-            grades.setError("Podaj ilosc ocen!");
-            return false;
-//        } else if (gradesValue < 0 || gradesValue > 15) {
-//            grades.setError("Podaj poprawna ilosc ocen (5-15)!");
-//            return false;
-        }
-        return true;
     }
 }
