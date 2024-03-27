@@ -6,13 +6,38 @@
     android:layout_height="match_parent"
     tools:context=".Lab2Activity">
 
-    <TextView
-        android:id="@+id/TEMP1"
-        android:layout_width="249dp"
-        android:layout_height="112dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/numberRecyclerView"
+        android:layout_width="388dp"
+        android:layout_height="601dp"
+        app:layout_constraintBottom_toTopOf="@+id/TEMP1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.305"
+        tools:listitem="@layout/list_row" />
+
+    <TextView
+        android:id="@+id/TEMP1"
+        android:layout_width="205dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/averageButton"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/averageButton"
+        android:layout_width="117dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="36dp"
+        android:text="ŚREDNIA"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
