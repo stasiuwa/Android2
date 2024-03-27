@@ -7,34 +7,34 @@
     tools:context=".Lab2Activity">
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/numberRecyclerView"
-        android:layout_width="388dp"
-        android:layout_height="601dp"
-        app:layout_constraintBottom_toTopOf="@+id/TEMP1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.305"
-        tools:listitem="@layout/list_row" />
+        app:title="ANDROID LABY" />
 
-    <TextView
-        android:id="@+id/TEMP1"
-        android:layout_width="205dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/averageButton"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/gradesRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        tools:listitem="layout/list_row">
+
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <Button
         android:id="@+id/averageButton"
-        android:layout_width="117dp"
-        android:layout_height="56dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginBottom="36dp"
+        android:layout_width="141dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:text="ŚREDNIA"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

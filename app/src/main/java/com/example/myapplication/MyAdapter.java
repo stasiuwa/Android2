@@ -7,19 +7,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Button;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyAdapterViewHolder> {
 
-    private ArrayList<Integer> mNumberList;
+    private List<GradeModel> mGradesList;
     private Activity mActivity;
 
-    public MyAdapter(ArrayList<Integer> mNumberList, Activity mActivity) {
-        this.mNumberList = mNumberList;
+    public MyAdapter(List<GradeModel> mGradesList, Activity mActivity) {
+        this.mGradesList = mGradesList;
         this.mActivity = mActivity;
     }
 
@@ -35,57 +41,42 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyAdapterViewHolde
 //    wywoływane zawsze gdy ma byc wyświetlony nowy wiersz
     @Override
     public void onBindViewHolder(@NonNull MyAdapterViewHolder holder, int position) {
-        int value = mNumberList.get(position);
-        holder.mNumberEditText.setTag(position);
-        holder.mNumberEditText.setText(Integer.toString(value));
+        GradeModel gradeModel = mGradesList.get(position);
+        holder.mGradeTextView.setText(gradeModel.getName());
+        holder.grade = gradeModel.getGrade();
     }
 
     @Override
     public int getItemCount() {
-        return mNumberList.size();
+        return mGradesList.size();
     }
 
 //    viewHolder zarzadza pojedynczym wierszem listy, to dobre miejsce na zaimplementowanie słuchaczy
-    public class MyAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, TextWatcher {
-
-        Button mPlusButton;
-        EditText mNumberEditText;
+    public class MyAdapterViewHolder extends RecyclerView.ViewHolder implements RadioGroup.OnCheckedChangeListener {
+        TextView mGradeTextView;
+        int grade = 2;
+        Map<Integer, Integer> radioButtons;
 
         public MyAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
-            mNumberEditText = itemView.findViewById(R.id.numberEditText);
-            mNumberEditText.addTextChangedListener(this);
+            mGradeTextView = itemView.findViewById(R.id.lessonLabel);
+            RadioGroup buttons = itemView.findViewById(R.id.buttons);
+            buttons.setOnCheckedChangeListener(this);
+
+            radioButtons = new HashMap<>();
+            radioButtons.put(R.id.grade_2, 2);
+            radioButtons.put(R.id.grade_3, 3);
+            radioButtons.put(R.id.grade_4, 4);
+            radioButtons.put(R.id.grade_5, 5);
         }
 
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
 
         @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-            int number = 0;
-            try {
-                number = Integer.parseInt(mNumberEditText.getText().toString());
-            } catch (NumberFormatException e) {
-                int index = (Integer) mNumberEditText.getTag();
-                mNumberList.set(index,number);
-            }
-        }
-
-        @Override
-        public void onClick(View view) {
-            int number = 0;
-            try {
-                number = Integer.parseInt(mNumberEditText.getText().toString());
-                number++;
-            } catch (NumberFormatException ignored) {
-                mNumberEditText.setText(Integer.toString(number));
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            Integer value = radioButtons.get(checkedId);
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION){
+                mGradesList.get(position).setGrade(value);
             }
         }
     }

@@ -13,4 +13,23 @@
     <string name="formSurnameHint">wprowadz nazwisko</string>
     <string name="formGradesAmount">Liczba ocen:</string>
     <string name="gradesBigCap">OCENY</string>
+    <string name="gradeText">Ocena:</string>
+    <string name="lab2_2tittle">SPIS PRZEDMIOTÓW Z OCENAMI</string>
+    <string-array name="lessonsArray">
+        <item>Programowanie</item>
+        <item>WF</item>
+        <item>Algorytmy</item>
+        <item>Narzędzia</item>
+        <item>Bezpieczeństwo</item>
+        <item>przedmiot6</item>
+        <item>przedmiot7</item>
+        <item>przedmiot8</item>
+        <item>przedmiot9</item>
+        <item>przedmiot10</item>
+        <item>przedmiot11</item>
+        <item>przedmiot12</item>
+        <item>przedmiot13</item>
+        <item>przedmiot14</item>
+        <item>przedmiot15</item>
+    </string-array>
 </resources>
