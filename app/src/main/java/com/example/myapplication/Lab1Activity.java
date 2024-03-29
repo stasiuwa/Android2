@@ -1,8 +1,15 @@
 package com.example.myapplication;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,10 +22,14 @@ import android.widget.Toast;
 
 public class Lab1Activity extends AppCompatActivity {
 
-    Button gradesButton;
+    Button gradesButton, buttonGradesFinish;
     EditText name, surname, grades;
 
+    TextView gradesMessageFinish;
+
     boolean[] showButton = {false, false, false};
+
+    private static final int REQUEST_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -35,7 +46,11 @@ public class Lab1Activity extends AppCompatActivity {
         Toast formError = Toast.makeText(this, "Wprowadzono zle dane", Toast.LENGTH_SHORT);
 
         gradesButton = findViewById(R.id.gradesButton);
+        buttonGradesFinish = findViewById(R.id.buttonGradesFinish);
+        gradesMessageFinish = findViewById(R.id.textViewGradesAverage);
+
         gradesButton.setVisibility(View.INVISIBLE);
+        buttonGradesFinish.setVisibility(View.INVISIBLE);
 
         name = findViewById(R.id.name);
         surname = findViewById(R.id.surname);
@@ -91,12 +106,51 @@ public class Lab1Activity extends AppCompatActivity {
             Bundle sendData = new Bundle();
             sendData.putInt("gradesAmount", Integer.parseInt(grades.getText().toString()));
             intent.putExtras(sendData);
-            setResult(RESULT_OK, intent);
-            finish();
 
-            startActivity(intent);
+            Lab2ActivityResultLauncher.launch(intent);
+//            startActivityForResult(intent, REQUEST_CODE);
+//            setResult(RESULT_OK, intent);
+//            finish();
+//            startActivity(intent);
+        });
+        buttonGradesFinish.setOnClickListener( view -> {
+            String message = "";
+            if (buttonGradesFinish.getText().toString().equals("SESJA ZDANA")) {
+                message = "Gratulacje!\nOtrzymuejsz zaliczenie 🎉🎉";
+            } else {
+                message = "Wysyłam podanie o zaliczenie warunkowe 😥😥";
+            }
+            new AlertDialog.Builder(this)
+                    .setMessage(message)
+                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            finishAffinity();
+//                            wg UX to niemiło zamykać aplikacje tako
+                        }
+                    })
+                    .show();
         });
     }
+
+    /**
+     * Odpalenie aktywnosci Lab2 z obsługą danych wprowadzonych w podrzednej aktywnosci
+     */
+    ActivityResultLauncher<Intent> Lab2ActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult o) {
+                    if (o.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = o.getData();
+                        buttonGradesFinish.setVisibility(View.VISIBLE);
+                        buttonGradesFinish.setText(data.getExtras().getString("message"));
+                        gradesMessageFinish.setText("ŚREDNIA: " + Float.toString(data.getExtras().getFloat("average")));
+                    }
+                }
+            }
+    );
+
     @Override
     protected void onSaveInstanceState(Bundle outState){
 

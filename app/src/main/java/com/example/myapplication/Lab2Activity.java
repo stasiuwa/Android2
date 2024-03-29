@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -58,16 +59,30 @@ public class Lab2Activity extends AppCompatActivity {
 
     private void computeAverage() {
         int sum=0;
+        boolean isZdane;
         for (GradeModel grade: mGradesList) sum+=grade.getGrade();
-        float srednia = sum / (float)amountOfGrades;
+        float avg = sum / (float)amountOfGrades;
+        String message="";
+        Intent intent = new Intent(Lab2Activity.this, Lab1Activity.class);
+        Bundle sendData = new Bundle();
 
-        String message="Średnia = " + srednia;
-        if (srednia < 3.0) {
-            message += "\nWyjazd na waruna!";
+        if (avg < 3.0) {
+            message += "Wyjazd na waruna!";
+            isZdane = true;
         } else {
-            message += "\nSESJA ZDANA";
+            message += "SESJA ZDANA";
+            isZdane = false;
         }
-        new AlertDialog.Builder(this).setMessage(message).show();
+
+//        sendData.putBoolean("isZdane", isZdane);
+        sendData.putFloat("average", avg);
+        sendData.putString("message", message);
+        intent.putExtras(sendData);
+
+        setResult(RESULT_OK, intent);
+        finish();
+
+//        new AlertDialog.Builder(this).setMessage(message).show();
 //        Toast.makeText(this, "Srednia = " + srednia , Toast.LENGTH_SHORT).show();
     }
 }
