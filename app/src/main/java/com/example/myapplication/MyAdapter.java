@@ -1,12 +1,14 @@
 package com.example.myapplication;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,23 +29,41 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyAdapterViewHolde
     public MyAdapter(List<GradeModel> mGradesList, Activity mActivity) {
         this.mGradesList = mGradesList;
         this.mActivity = mActivity;
+
     }
 
-//    wywoływane gdy tworzony jest nowy wiersz
+    //    wywoływane gdy tworzony jest nowy wiersz
     @NonNull
     @Override
     public MyAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View rowRootView = mActivity.getLayoutInflater().inflate(R.layout.list_row,parent,false);
         MyAdapterViewHolder myAdapterViewHolder = new MyAdapterViewHolder(rowRootView);
+
         return myAdapterViewHolder;
     }
 
 //    wywoływane zawsze gdy ma byc wyświetlony nowy wiersz
     @Override
     public void onBindViewHolder(@NonNull MyAdapterViewHolder holder, int position) {
+
         GradeModel gradeModel = mGradesList.get(position);
         holder.mGradeTextView.setText(gradeModel.getName());
         holder.grade = gradeModel.getGrade();
+
+        switch (gradeModel.getGrade()) {
+            case 2:
+                holder.buttons.check(R.id.grade_2);
+                break;
+            case 3:
+                holder.buttons.check(R.id.grade_3);
+                break;
+            case 4:
+                holder.buttons.check(R.id.grade_4);
+                break;
+            case 5:
+                holder.buttons.check(R.id.grade_5);
+                break;
+        }
     }
 
     @Override
@@ -51,16 +71,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyAdapterViewHolde
         return mGradesList.size();
     }
 
+
+
 //    viewHolder zarzadza pojedynczym wierszem listy, to dobre miejsce na zaimplementowanie słuchaczy
     public class MyAdapterViewHolder extends RecyclerView.ViewHolder implements RadioGroup.OnCheckedChangeListener {
-        TextView mGradeTextView;
-        int grade = 2;
+        TextView mGradeTextView = itemView.findViewById(R.id.lessonLabel);
+        RadioGroup buttons = itemView.findViewById(R.id.buttons);
+        int grade;
         Map<Integer, Integer> radioButtons;
+
 
         public MyAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
-            mGradeTextView = itemView.findViewById(R.id.lessonLabel);
-            RadioGroup buttons = itemView.findViewById(R.id.buttons);
             buttons.setOnCheckedChangeListener(this);
 
             radioButtons = new HashMap<>();
@@ -68,6 +90,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyAdapterViewHolde
             radioButtons.put(R.id.grade_3, 3);
             radioButtons.put(R.id.grade_4, 4);
             radioButtons.put(R.id.grade_5, 5);
+
         }
 
 
@@ -77,6 +100,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyAdapterViewHolde
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION){
                 mGradesList.get(position).setGrade(value);
+                mGradesList.get(position).setName(mGradeTextView.getText().toString());
             }
         }
     }

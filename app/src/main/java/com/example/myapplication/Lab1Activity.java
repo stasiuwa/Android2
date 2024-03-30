@@ -38,8 +38,8 @@ public class Lab1Activity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setTitle("LAB 1");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 //dodac ogolne zmienne
 
@@ -177,7 +177,7 @@ public class Lab1Activity extends AppCompatActivity {
         name.setText(savedInstanceState.getString("name"));
         surname.setText(savedInstanceState.getString("surname"));
         grades.setText(savedInstanceState.getString("grades"));
-        this.showButton = savedInstanceState.getBooleanArray("buttonVis");
+        showButton = savedInstanceState.getBooleanArray("buttonVis");
 
         showButton();
     }
