@@ -1,32 +1,27 @@
-package com.example.myapplication;
+package com.example.myapplication.Adapters;
 
 import android.app.Activity;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import com.example.myapplication.Models.GradeModel;
+import com.example.myapplication.R;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyAdapterViewHolder> {
+public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.GradeAdapterViewHolder> {
 
     private List<GradeModel> mGradesList;
     private Activity mActivity;
 
-    public MyAdapter(List<GradeModel> mGradesList, Activity mActivity) {
+    public GradeAdapter(List<GradeModel> mGradesList, Activity mActivity) {
         this.mGradesList = mGradesList;
         this.mActivity = mActivity;
 
@@ -35,16 +30,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyAdapterViewHolde
     //    wywoływane gdy tworzony jest nowy wiersz
     @NonNull
     @Override
-    public MyAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public GradeAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View rowRootView = mActivity.getLayoutInflater().inflate(R.layout.list_row,parent,false);
-        MyAdapterViewHolder myAdapterViewHolder = new MyAdapterViewHolder(rowRootView);
-
-        return myAdapterViewHolder;
+        return new GradeAdapterViewHolder(rowRootView);
     }
 
 //    wywoływane zawsze gdy ma byc wyświetlony nowy wiersz
     @Override
-    public void onBindViewHolder(@NonNull MyAdapterViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull GradeAdapterViewHolder holder, int position) {
 
         GradeModel gradeModel = mGradesList.get(position);
         holder.mGradeTextView.setText(gradeModel.getName());
@@ -74,14 +67,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyAdapterViewHolde
 
 
 //    viewHolder zarzadza pojedynczym wierszem listy, to dobre miejsce na zaimplementowanie słuchaczy
-    public class MyAdapterViewHolder extends RecyclerView.ViewHolder implements RadioGroup.OnCheckedChangeListener {
+    public class GradeAdapterViewHolder extends RecyclerView.ViewHolder implements RadioGroup.OnCheckedChangeListener {
         TextView mGradeTextView = itemView.findViewById(R.id.lessonLabel);
         RadioGroup buttons = itemView.findViewById(R.id.buttons);
         int grade;
         Map<Integer, Integer> radioButtons;
 
 
-        public MyAdapterViewHolder(@NonNull View itemView) {
+        public GradeAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             buttons.setOnCheckedChangeListener(this);
 

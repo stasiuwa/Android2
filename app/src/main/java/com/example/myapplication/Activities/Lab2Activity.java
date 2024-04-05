@@ -1,7 +1,6 @@
-package com.example.myapplication;
+package com.example.myapplication.Activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,14 +8,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.Models.GradeModel;
+import com.example.myapplication.Adapters.GradeAdapter;
+import com.example.myapplication.R;
+
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 public class Lab2Activity extends AppCompatActivity {
 
     private ArrayList<GradeModel> mGradesList = new ArrayList<>();
@@ -24,7 +24,8 @@ public class Lab2Activity extends AppCompatActivity {
     String message="";
     int amountOfGrades;
 
-    MyAdapter myAdapter = null;
+    GradeAdapter gradeAdapter = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,11 +35,12 @@ public class Lab2Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("LAB 2");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
+        Bundle receivedData = getIntent().getExtras();
 
         try {
-            amountOfGrades = getIntent().getExtras().getInt("gradesAmount");
+            amountOfGrades = receivedData.getInt("gradesAmount");
         } catch (NullPointerException e) {
             Toast.makeText(this, "popsulo sie", Toast.LENGTH_SHORT).show();
         }
@@ -48,27 +50,16 @@ public class Lab2Activity extends AppCompatActivity {
                 view -> { computeAverage(); }
         );
         String[] gradesNames = getResources().getStringArray(R.array.lessonsArray);
-        Random random = new Random();
 
 //        przy każdym obrocie losuje nowe oceny i wyświetla odpowiednie radioCheck
 //        ale w pamięci ma zapisane własciwe oceny z pierwszego uruchomienia/wybraneprzez użytkownika
 
         for (int i=0; i<amountOfGrades; i++){
-            mGradesList.add(new GradeModel(gradesNames[i], random.nextInt(4) + 2 ));
+            mGradesList.add(new GradeModel(gradesNames[i], 2 ));
         }
 
-        myAdapter = new MyAdapter(mGradesList, this);
-        RecyclerView gradeRecyclerView = findViewById(R.id.gradesRecyclerView);
+        setUpState();
 
-
-        gradeRecyclerView.setAdapter(myAdapter);
-        gradeRecyclerView.setLayoutManager( new LinearLayoutManager(this) );
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     private void computeAverage() {
@@ -100,6 +91,25 @@ public class Lab2Activity extends AppCompatActivity {
 //        Toast.makeText(this, "Srednia = " + srednia , Toast.LENGTH_SHORT).show();
     }
 
+    private void setUpState(){
+        gradeAdapter = new GradeAdapter(mGradesList, this);
+        RecyclerView gradeRecyclerView = findViewById(R.id.gradesRecyclerView);
+
+        gradeRecyclerView.setAdapter(gradeAdapter);
+        gradeRecyclerView.setLayoutManager( new LinearLayoutManager(this) );
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("grades", mGradesList);
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putParcelableArrayList("grades", mGradesList);
@@ -109,6 +119,9 @@ public class Lab2Activity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         mGradesList = savedInstanceState.getParcelableArrayList("grades");
+
+        setUpState();
+
         super.onRestoreInstanceState(savedInstanceState);
     }
 }

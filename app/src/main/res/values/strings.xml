@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">LowcaAndroidow</string>
-    <string name="lab1">Lab1</string>
-    <string name="lab2">Lab2</string>
-    <string name="lab3">Lab3</string>
-    <string name="lab4">Lab4</string>
+    <string name="lab1">Oceny</string>
+    <string name="lab2">Lab3</string>
+    <string name="lab3">Lab4</string>
+    <string name="lab4">Lab5</string>
     <string name="menuTittle">Android Laboratorium</string>
     <string name="lab1Activity">Laboratorium 1</string>
     <string name="formName">Imię:</string>

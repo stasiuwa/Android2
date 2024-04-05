@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Lab2Activity">
+    tools:context=".Activities.Lab2Activity">
 
 
     <androidx.appcompat.widget.Toolbar
@@ -18,8 +18,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gradesRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="75dp"
+        android:layout_marginBottom="65dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
