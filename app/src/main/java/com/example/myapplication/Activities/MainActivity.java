@@ -16,8 +16,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String txt = "";
-
         Toast toast = Toast.makeText(this, "Jeszcze nie wykonano!", Toast.LENGTH_SHORT);
 
 
@@ -27,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button btn2 = (Button) findViewById(R.id.btnLab2);
         btn2.setOnClickListener(
-                view -> toast.show());
+                view -> changeActivity(PhoneDatabaseActivity.class));
 
         Button btn3 = (Button) findViewById(R.id.btnLab3);
         btn3.setOnClickListener(

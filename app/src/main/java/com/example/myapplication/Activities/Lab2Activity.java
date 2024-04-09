@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.myapplication.Models.GradeModel;
+import com.example.myapplication.Data.Models.GradeModel;
 import com.example.myapplication.Adapters.GradeAdapter;
 import com.example.myapplication.R;
 

@@ -30,7 +30,6 @@ public class Lab1Activity extends AppCompatActivity {
     boolean[] showButton = {false, false, false};
     boolean showAvg = false;
 
-    private static final int REQUEST_CODE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -145,6 +144,9 @@ public class Lab1Activity extends AppCompatActivity {
                     if (o.getResultCode() == Activity.RESULT_OK) {
                         Intent data = o.getData();
                         buttonGradesFinish.setVisibility(View.VISIBLE);
+//                        It is just a warning as it will never be null if the response is successful.
+//                        You can ignore it or wrap around if(response.body() != null) to remove the warning.
+//                        https://stackoverflow.com/questions/46519388/method-invocation-may-produce-nullpointerexception-retrofit-body
                         buttonGradesFinish.setText(data.getExtras().getString("message"));
                         gradesMessageFinish.setText("ŚREDNIA: " + Float.toString(data.getExtras().getFloat("average")));
 
