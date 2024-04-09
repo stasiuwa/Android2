@@ -28,6 +28,7 @@ public class Lab1Activity extends AppCompatActivity {
     TextView gradesMessageFinish;
 
     boolean[] showButton = {false, false, false};
+    boolean showAvg = false;
 
     private static final int REQUEST_CODE = 1;
     @Override
@@ -146,6 +147,8 @@ public class Lab1Activity extends AppCompatActivity {
                         buttonGradesFinish.setVisibility(View.VISIBLE);
                         buttonGradesFinish.setText(data.getExtras().getString("message"));
                         gradesMessageFinish.setText("ŚREDNIA: " + Float.toString(data.getExtras().getFloat("average")));
+
+                        showAvg = true;
                     }
                 }
             }
@@ -163,6 +166,13 @@ public class Lab1Activity extends AppCompatActivity {
         outState.putString("grades", grades.getText().toString());
         outState.putBooleanArray("buttonVis", showButton);
 
+        buttonGradesFinish = findViewById(R.id.buttonGradesFinish);
+        gradesMessageFinish = findViewById(R.id.textViewGradesAverage);
+        outState.putString("message", buttonGradesFinish.getText().toString());
+        outState.putString("gradesMessage", gradesMessageFinish.getText().toString());
+
+
+
         super.onSaveInstanceState(outState);
     }
     @Override
@@ -173,11 +183,21 @@ public class Lab1Activity extends AppCompatActivity {
         surname = findViewById(R.id.surname);
         grades = findViewById(R.id.grades);
 
-
         name.setText(savedInstanceState.getString("name"));
         surname.setText(savedInstanceState.getString("surname"));
         grades.setText(savedInstanceState.getString("grades"));
         showButton = savedInstanceState.getBooleanArray("buttonVis");
+
+
+
+        String message = savedInstanceState.getString("message");
+        if (!message.equals("")){
+            buttonGradesFinish = findViewById(R.id.buttonGradesFinish);
+            gradesMessageFinish = findViewById(R.id.textViewGradesAverage);
+            buttonGradesFinish.setText(message);
+            gradesMessageFinish.setText(savedInstanceState.getString("gradesMessage"));
+            buttonGradesFinish.setVisibility(View.VISIBLE);
+        }
 
         showButton();
     }

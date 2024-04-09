@@ -82,6 +82,7 @@ public class Lab2Activity extends AppCompatActivity {
 //        sendData.putBoolean("isZdane", isZdane);
         sendData.putFloat("average", avg);
         sendData.putString("message", message);
+        sendData.putBoolean("isFinished", true);
         intent.putExtras(sendData);
 
         setResult(RESULT_OK, intent);
