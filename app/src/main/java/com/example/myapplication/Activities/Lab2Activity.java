@@ -96,6 +96,7 @@ public class Lab2Activity extends AppCompatActivity {
         gradeAdapter = new GradeAdapter(mGradesList, this);
         RecyclerView gradeRecyclerView = findViewById(R.id.gradesRecyclerView);
 
+
         gradeRecyclerView.setAdapter(gradeAdapter);
         gradeRecyclerView.setLayoutManager( new LinearLayoutManager(this) );
     }

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.AddPhoneActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="15dp"
+        />
+    <TableLayout
+        android:layout_margin="7sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:shrinkColumns="*"
+        android:stretchColumns="2"
+        >
+        <TableRow
+            android:id="@+id/row1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:text="@string/phoneBrand"
+                />
+            <EditText
+                android:id="@+id/phoneBrandEditText"
+                android:layout_span="2"
+                android:hint="@string/insertPhoneBrand"
+                android:inputType="text"
+                android:textSize="15sp"
+                />
+        </TableRow>
+        <TableRow
+            android:id="@+id/row2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:text="@string/phoneModel"
+                />
+            <EditText
+                android:id="@+id/phoneModelEditText"
+                android:layout_span="2"
+                android:hint="@string/insertPhoneModel"
+                android:inputType="text"
+                android:textSize="15sp"
+                />
+        </TableRow>
+        <TableRow
+            android:id="@+id/row3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/phoneOSversion" />
+            <EditText
+                android:id="@+id/phoneOSversionEditText"
+                android:layout_span="2"
+                android:hint="@string/insertPhoneOSversion"
+                android:inputType="text"
+                android:textSize="15sp"
+                />
+        </TableRow>
+        <TableRow
+            android:id="@+id/row4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/phoneWebsite" />
+            <EditText
+                android:id="@+id/phoneWebsiteEditText"
+                android:layout_span="2"
+                android:hint="@string/insertPhoneWebsite"
+                android:inputType="text"
+                android:textSize="15sp"
+                />
+        </TableRow>
+        <TableRow
+            android:id="@+id/row5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+            <Button
+                android:id="@+id/phoneWebsiteButton"
+                android:text="@string/phoneWebsite"
+                android:textSize="12sp"
+                style="@style/Widget.AppCompat.Button.Small"
+                />
+            <Button
+                android:id="@+id/phoneCancelButton"
+                android:text="@string/cancel"
+                android:textSize="12sp"
+                style="@style/Widget.AppCompat.Button.Small"
+                />
+            <Button
+                android:id="@+id/phoneAddButton"
+                android:text="@string/addPhone"
+                android:textSize="12sp"
+                style="@style/Widget.AppCompat.Button.Small"
+                />
+        </TableRow>
+
+
+    </TableLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
