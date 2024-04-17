@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,7 +27,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class PhoneDatabaseActivity extends AppCompatActivity {
+public class PhoneDatabaseActivity extends AppCompatActivity implements PhoneAdapter.OnItemClickListener {
 
     List<PhoneModel> mPhonesList;
     PhoneAdapter adapter;
@@ -58,18 +59,35 @@ public class PhoneDatabaseActivity extends AppCompatActivity {
 
         phonesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        FloatingActionButton fab = findViewById(R.id.phonesFAB);
+
+        fab.setOnClickListener( view -> {
+            AddPhoneActivityResultLauncher.launch(new Intent(this, AddPhoneActivity.class));
+        });
+
+        ItemTouchHelper helper = new ItemTouchHelper(callback);
+        helper.attachToRecyclerView(phonesRecyclerView);
+
         viewModel = new ViewModelProvider(this).get(PhoneViewModel.class);
 
 //        aktywnosc ma obserwowac zmiany w liscie elementow przechowywancyh w LiveData, w momencie
 //        zmiany ma byc ustawiana nowa lista w adapterze
         viewModel.getAllPhones().observe(this, phoneModels -> adapter.setPhoneList(phoneModels) );
 
-        FloatingActionButton fab = findViewById(R.id.phonesFAB);
-        fab.setOnClickListener( view -> {
-            LaunchAddPhoneActivity();
-        });
-
     }
+
+    ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            viewModel.deletePhone(viewModel.getAllPhones().getValue().get(viewHolder.getAdapterPosition()));
+        }
+    };
+
 
 //    utworzenie menu
     @Override
@@ -88,7 +106,7 @@ public class PhoneDatabaseActivity extends AppCompatActivity {
         } else if (id == R.id.phoneAdd) {
 //            PhoneModel p = new PhoneModel("marka", "model", "4.2", "joljol.pl");
 //            viewModel.addPhone(p);
-            LaunchAddPhoneActivity();
+            AddPhoneActivityResultLauncher.launch(new Intent(this, AddPhoneActivity.class));
             return true;
         }
 
@@ -103,14 +121,20 @@ public class PhoneDatabaseActivity extends AppCompatActivity {
                     Intent data = o.getData();
                     if (data.getExtras().getBoolean("success")){
                         PhoneModel phone = data.getParcelableExtra("phone");
-                        viewModel.addPhone(phone);
+                        if (data.getExtras().getBoolean("editing")) {
+                            viewModel.updatePhone(phone);
+                        } else {
+                            viewModel.addPhone(phone);
+                        }
                     }
                 }
             }
     );
 
-    private void LaunchAddPhoneActivity() {
-        AddPhoneActivityResultLauncher.launch(new Intent(this, AddPhoneActivity.class));
+    @Override
+    public void onItemClickListener(PhoneModel phone) {
+        Intent intent = new Intent(this, AddPhoneActivity.class);
+        intent.putExtra("phone", phone);
+        AddPhoneActivityResultLauncher.launch(intent);
     }
-
 }

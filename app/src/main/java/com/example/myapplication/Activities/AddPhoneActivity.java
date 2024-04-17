@@ -18,6 +18,7 @@ public class AddPhoneActivity extends AppCompatActivity {
 
     EditText brand, model, OSversion, website;
     Button websiteButton, clearButton, addButton;
+    PhoneModel toEditPhone;
     boolean toEdit;
 
     @Override
@@ -48,13 +49,21 @@ public class AddPhoneActivity extends AppCompatActivity {
 
         if (getIntent().getExtras() != null && getIntent().getExtras().getParcelable("phone") != null) {
             toEdit = true;
+            toEditPhone = getIntent().getExtras().getParcelable("phone");
+
+            brand.setText(toEditPhone.getBrand());
+            model.setText(toEditPhone.getModel());
+            OSversion.setText(toEditPhone.getOSVersion());
+            website.setText(toEditPhone.getWebsite());
+
         }
 
         websiteButton.setOnClickListener( view -> {
             String address = website.getText().toString();
-//            address = (address.startsWith("http://") || address.startsWith("https://")) ? address : "https://" + address;
+            address = (address.startsWith("http://") || address.startsWith("https://")) ? address : "http://" + address;
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(address));
-//            startActivity(browserIntent);
+            startActivity(browserIntent);
+
         });
 
         clearButton.setOnClickListener( view -> {
@@ -73,15 +82,24 @@ public class AddPhoneActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, PhoneDatabaseActivity.class);
                 Bundle bundle = new Bundle();
 
-                PhoneModel phoneModel = new PhoneModel(
-                        brand.getText().toString(),
-                        model.getText().toString(),
-                        OSversion.getText().toString(),
-                        website.getText().toString()
-                );
-
-                bundle.putParcelable("phone", phoneModel);
+                if(toEdit) {
+                    toEditPhone.setBrand(brand.getText().toString());
+                    toEditPhone.setModel(model.getText().toString());
+                    toEditPhone.setOSVersion(OSversion.getText().toString());
+                    toEditPhone.setWebsite(website.getText().toString());
+                    bundle.putBoolean("editing", true);
+                } else {
+                    toEditPhone = new PhoneModel(
+                            brand.getText().toString(),
+                            model.getText().toString(),
+                            OSversion.getText().toString(),
+                            website.getText().toString()
+                    );
+                    bundle.putBoolean("editing", false);
+                }
+                bundle.putParcelable("phone", toEditPhone);
                 bundle.putBoolean("success", true);
+
                 intent.putExtras(bundle);
                 setResult(RESULT_OK, intent);
                 finish();

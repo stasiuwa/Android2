@@ -18,9 +18,21 @@ public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.PhoneAdapter
     List<PhoneModel> mPhoneList;
     Activity activity;
 
+    private OnItemClickListener mOnItemClickListener;
+
     public PhoneAdapter(Activity context) {
         this.activity = context;
         mPhoneList = null;
+
+        try {
+            mOnItemClickListener = (OnItemClickListener) context;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClickListener(PhoneModel phone);
     }
 
     @NonNull
@@ -81,6 +93,7 @@ public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.PhoneAdapter
             int position = getAdapterPosition();
             if ( position != RecyclerView.NO_POSITION) {
                 PhoneModel phone = mPhoneList.get(position);
+                mOnItemClickListener.onItemClickListener(phone);
             }
         }
     }
