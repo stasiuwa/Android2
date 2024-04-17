@@ -56,7 +56,7 @@ public class Lab1Activity extends AppCompatActivity {
         surname = findViewById(R.id.surname);
         grades = findViewById(R.id.grades);
 
-//      name.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//      name.setOnFocusChangeListener(new View.OnFocusChangeListener() { - alternatyna wersja
         name.setOnFocusChangeListener((v, hasFocus) -> {
             if(!hasFocus){
                 if(name.length() == 0) {
@@ -203,6 +203,11 @@ public class Lab1Activity extends AppCompatActivity {
 
         showButton();
     }
+
+    /**
+     * Funkcja zarzadzająca wyświetlaniem przycisku do przejścia do następnej aktywności
+     * zależnie od poprawności wprowadzonych do formularza danych
+     */
     private void showButton(){
         boolean allTrue = true;
         for (boolean value : showButton){

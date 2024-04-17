@@ -26,6 +26,7 @@
     <string name="phoneWebsite">Strona WWW:</string>
     <string name="insertPhoneWebsite">Podaj stronę www</string>
     <string name="cancel">Anuluj</string>
+    <string name="average">ŚREDNIA</string>
     <string-array name="lessonsArray">
         <item>Programowanie</item>
         <item>WF</item>

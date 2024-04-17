@@ -25,7 +25,7 @@ public class Lab2Activity extends AppCompatActivity {
     int amountOfGrades;
 
     GradeAdapter gradeAdapter = null;
-
+    RecyclerView gradeRecyclerView = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,15 +51,11 @@ public class Lab2Activity extends AppCompatActivity {
         );
         String[] gradesNames = getResources().getStringArray(R.array.lessonsArray);
 
-//        przy każdym obrocie losuje nowe oceny i wyświetla odpowiednie radioCheck
-//        ale w pamięci ma zapisane własciwe oceny z pierwszego uruchomienia/wybraneprzez użytkownika
-
         for (int i=0; i<amountOfGrades; i++){
             mGradesList.add(new GradeModel(gradesNames[i], 2 ));
         }
 
         setUpState();
-
     }
 
     private void computeAverage() {
@@ -92,15 +88,22 @@ public class Lab2Activity extends AppCompatActivity {
 //        Toast.makeText(this, "Srednia = " + srednia , Toast.LENGTH_SHORT).show();
     }
 
+    /*
+      Funkcja ustawiajaca GradeAdapter z lista ocen oraz RecyclerView
+      - napisana aby uniknąć duplikacji kodu
+     */
     private void setUpState(){
+
         gradeAdapter = new GradeAdapter(mGradesList, this);
-        RecyclerView gradeRecyclerView = findViewById(R.id.gradesRecyclerView);
-
-
+        gradeRecyclerView = findViewById(R.id.gradesRecyclerView);
         gradeRecyclerView.setAdapter(gradeAdapter);
         gradeRecyclerView.setLayoutManager( new LinearLayoutManager(this) );
     }
 
+    /*
+       Wymagane aby po powrocie do poprzedniej aktywnosci przy uzyciu strzalki z menu
+       nie czyscilo danych z formularza
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == android.R.id.home){
@@ -121,6 +124,12 @@ public class Lab2Activity extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         mGradesList = savedInstanceState.getParcelableArrayList("grades");
+
+        /*
+              po resecie aktywnosci ustawione oceny byly poprawnie zapisane w pamieci,
+              ale wyswietlane byly z onCreate ( czyli 2.0 ), aby to naprawic
+              trzeba od nowa ustawic adapter i recyclerView
+         */
 
         setUpState();
 
