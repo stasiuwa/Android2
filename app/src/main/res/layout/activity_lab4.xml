@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.Lab4Activity"
+    android:layout_margin="15sp"
+    android:orientation="vertical"
+    >
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10sp"
+        />
+
+    <LinearLayout
+        android:id="@+id/addressFields"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginBottom="15sp"
+            android:text="@string/fileURL" />
+
+        <EditText
+            android:id="@+id/fileAddressEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/fileInfoButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/addressFields"
+        android:text="@string/downloadFileInfoButton"
+        android:textSize="16sp"
+        style="@style/Widget.AppCompat.Button.Small"
+        />
+    <LinearLayout
+        android:id="@+id/fileInfoFields"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/fileInfoButton"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/fileInfoButton"
+            android:orientation="vertical"
+            android:weightSum="5"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="@string/fileSize"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="@string/fileType"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/fileInfoButton"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/fileSizeTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="0"
+                android:textAlignment="center"/>
+            <TextView
+                android:id="@+id/fileTypeTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="0"
+                android:textAlignment="center"/>
+        </LinearLayout>
+    </LinearLayout>
+    <Button
+        android:id="@+id/fileDownloadButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/fileInfoFields"
+        android:textSize="16sp"
+        android:text="@string/downloadButton"
+        style="@style/Widget.AppCompat.Button.Small"
+        />
+    <LinearLayout
+        android:id="@+id/fileInfoFields2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/fileDownloadButton">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="@string/downloadedBytes"
+            />
+        <TextView
+            android:id="@+id/downloadedBytesTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:text="0"
+            />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/cancelDownloadButton"
+        style="@style/Widget.AppCompat.Button.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancelDownload"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        app:layout_constraintTop_toBottomOf="@id/fileInfoFields2"
+        android:layout_marginTop="20sp"
+        android:layout_span="3"
+        style="?android:attr/progressBarStyleHorizontal"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

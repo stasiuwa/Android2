@@ -38,7 +38,7 @@ public class Lab1Activity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("LAB 1");
+        getSupportActionBar().setTitle("Oceny");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 //dodac ogolne zmienne

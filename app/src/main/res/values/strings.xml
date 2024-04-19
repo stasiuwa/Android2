@@ -2,7 +2,7 @@
     <string name="app_name">LowcaAndroidow</string>
     <string name="menuButton1">Oceny</string>
     <string name="menuButton2">Telefony</string>
-    <string name="menuButton3">Lab4</string>
+    <string name="menuButton3">Pobieranie</string>
     <string name="menuButton4">Lab5</string>
     <string name="menuTittle">Android Laboratorium</string>
     <string name="lab1Activity">Laboratorium 1</string>
@@ -27,6 +27,16 @@
     <string name="insertPhoneWebsite">Podaj stronę www</string>
     <string name="cancel">Anuluj</string>
     <string name="average">ŚREDNIA</string>
+    <string name="downloadedBytes">Pobrano:</string>
+    <string name="downloadButton">POBIERZ PLIK</string>
+    <string name="fileType">Typ pliku:</string>
+    <string name="fileSize">Rozmiar pliku:</string>
+    <string name="downloadFileInfoButton">POBIERZ INFORMACJE</string>
+    <string name="fileURLhint">podaj adres do pliku</string>
+    <string name="fileURL">https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.36.tar.xz</string>
+    <string name="downloadingEnded">Zakończono pobieranie</string>
+    <string name="cancelDownload">Anuluj pobieranie</string>
+    <string name="invalidURL">Niepoprawny adres</string>
     <string-array name="lessonsArray">
         <item>Programowanie</item>
         <item>WF</item>
