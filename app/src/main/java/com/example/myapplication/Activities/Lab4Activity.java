@@ -74,7 +74,6 @@ public class Lab4Activity extends AppCompatActivity {
         binding.cancelDownloadButton.setVisibility(View.INVISIBLE);
         binding.cancelDownloadButton.setOnClickListener(v -> {
             FileManagerService.stopDownloading();
-//                Toast.makeText(Lab4Activity.this, "Anulowano pobieranie", Toast.LENGTH_SHORT).show();
             binding.cancelDownloadButton.setVisibility(View.INVISIBLE);
         });
 

@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button btn4 = (Button) findViewById(R.id.btnLab4);
         btn4.setOnClickListener(
-                view -> toast.show());
+                view -> changeActivity(Lab5Activity.class));
 
     }
 
