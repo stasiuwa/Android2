@@ -11,6 +11,7 @@ import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -20,20 +21,21 @@ import androidx.annotation.NonNull;
 
 import com.example.myapplication.R;
 
-public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Callback {
+import java.util.ArrayList;
 
+public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Callback {
     private int mColor = R.color.blue;
     private Paint mPaint;
+
     private Path mPath;
-    Bitmap bitmap = null;
-    Canvas canvas= null;
+    private ArrayList<Pair<Path,Paint>> mPaths;
 
     public PaintSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    private void init(){
+    private void init() {
         setZOrderOnTop(true);
         getHolder().setFormat(PixelFormat.TRANSPARENT);
         getHolder().addCallback(this);
@@ -45,17 +47,15 @@ public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Call
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStrokeWidth(10);
-
-//        bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-
     }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
         mPath = new Path();
-        setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
+        mPaths = new ArrayList<>();
+        setOnTouchListener((v, event) -> {
+            synchronized (getHolder()){
                 float X = event.getX();
                 float Y = event.getY();
                 mPaint.setColor(getResources().getColor(mColor));
@@ -63,27 +63,45 @@ public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Call
                 switch (event.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
                         mPath.reset();
-                        mPath.moveTo(X,Y);
+                        mPath.moveTo(X, Y);
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        mPath.lineTo(X,Y);
+                        mPath.lineTo(X, Y);
                         break;
                     case MotionEvent.ACTION_UP:
-                        mPath.lineTo(event.getX(), event.getY());
-                        canvas = getHolder().lockCanvas();
-                        canvas.drawPath(mPath, mPaint);
-                        getHolder().unlockCanvasAndPost(canvas);
+//                            dodaj sciezki z kolorami do tablicy
+                        Path tempPath = new Path(mPath);
+                        Paint tempPaint = new Paint(mPaint);
+                        mPaths.add(new Pair<>(tempPath, tempPaint));
                         break;
                 }
-                if (mPath != null) {
-                    canvas = getHolder().lockCanvas();
-                    canvas.drawPath(mPath, mPaint);
-                    getHolder().unlockCanvasAndPost(canvas);
-                }
+                drawCanva();
                 return true;
             }
         });
 
+    }
+
+    private void drawCanva(){
+        synchronized (getHolder()){
+            Canvas canvas = getHolder().lockCanvas();
+            if (canvas != null) {
+                try {
+//                    wyczysc ekran
+                    canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+//                    narysuj sciezki z tablicy na nowym ekranie
+                    for (Pair<Path,Paint> p : mPaths) {
+                        canvas.drawPath(p.first, p.second);
+                    }
+//                    rysuj aktualną ścieżke
+                    if (!mPath.isEmpty()){
+                        canvas.drawPath(mPath,mPaint);
+                    }
+                } finally {
+                    getHolder().unlockCanvasAndPost(canvas);
+                }
+            }
+        }
     }
 
     @Override
@@ -96,5 +114,19 @@ public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Call
 
     public void setStrokeColor(int color) {
         this.mColor = color;
+    }
+
+    public void clearCanva() {
+        synchronized (getHolder()) {
+            Canvas canvas = getHolder().lockCanvas();
+            if (canvas != null) {
+                try {
+                    canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+                    mPaths.clear();
+                } finally {
+                    getHolder().unlockCanvasAndPost(canvas);
+                }
+            }
+        }
     }
 }

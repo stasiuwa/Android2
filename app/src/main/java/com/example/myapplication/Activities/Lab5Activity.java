@@ -45,7 +45,7 @@ public class Lab5Activity extends AppCompatActivity {
             paintSurfaceView.setStrokeColor(R.color.green);
         });
         binding.clearPaintButton.setOnClickListener( v-> {
-
+            paintSurfaceView.clearCanva();
         });
 
     }
