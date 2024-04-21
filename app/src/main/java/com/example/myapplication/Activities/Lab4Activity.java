@@ -30,6 +30,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.Services.FileManagerService;
 import com.example.myapplication.databinding.ActivityLab4Binding;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.CompletableFuture;
@@ -69,7 +70,12 @@ public class Lab4Activity extends AppCompatActivity {
 
         binding.fileInfoButton.setOnClickListener( v -> fileInfoDownload());
         binding.fileDownloadButton.setOnClickListener( v -> startFileManagerService());
-        binding.cancelDownloadButton.setOnClickListener( v -> stopFileManagerService());
+//        binding.cancelDownloadButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                FileManagerService.isDownloading = false;
+//            }
+//        });
 
     }
 
@@ -114,11 +120,6 @@ public class Lab4Activity extends AppCompatActivity {
                 binding.fileTypeTextView.setText(result.fileType());
             });
         });
-    }
-
-    private void stopFileManagerService(){
-        Intent intent = new Intent(this, FileManagerService.class);
-        stopService(intent);
     }
 
     private void startFileManagerService() {

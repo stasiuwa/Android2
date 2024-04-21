@@ -48,7 +48,7 @@ public class FileManagerService extends Service {
     private Handler mServiceThreadHandler;
     private Handler mMainServiceHandler;
 
-    private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 1;
+    public static volatile boolean isDownloading = true;
 
     public FileManagerService() {}
 
@@ -127,16 +127,23 @@ public class FileManagerService extends Service {
             byte[] buffer = new byte[1024];
             int bytesRead;
             fileSize = connection.getContentLength();
-            int step = 1;
-            while ((bytesRead = inputStream.read(buffer, 0, 1024)) != -1) {
-                progress += bytesRead;
-                if (progress >= (fileSize/10)*step){
-                    updateNotification(step);
-                    Log.i(TAG,"/downloadFile() - Pobieranie: " + step + "%");
-                    step++;
-                    sendBroadcast(progress, fileSize, "Downloading");
-                }
+
+            float percentageStep = 1;
+            int nextThreshold = (int) (fileSize * (percentageStep/100));
+            int sumBytes = 0;
+
+            while ((bytesRead = inputStream.read(buffer, 0, 1024)) != -1 && isDownloading) {
                 outputStream.write(buffer, 0, bytesRead);
+                sumBytes += bytesRead;
+                if (sumBytes >= nextThreshold){
+                    progress += sumBytes;
+                    sumBytes = 0;
+                    int percentage = (int) ((progress/ (float) fileSize) * 100);
+                    updateNotification(percentage);
+                    Log.i(TAG,"/downloadFile() - Pobieranie: " + percentage + "%");
+                    sendBroadcast(progress, fileSize, "Downloading");
+                nextThreshold = (int) (fileSize * (percentageStep / 100));
+                }
             }
             Log.i(TAG, "/downloadFile() - Pobrano");
             updateNotification(progress);
@@ -186,5 +193,8 @@ public class FileManagerService extends Service {
     private void updateNotification(int progress){
         Log.d(TAG,"/updateNotification() - aktualizacja powiadomienia pobierania");
         mNotificationManager.notify(NOTIFICATION_ID, getNotification(progress));
+    }
+    public void stopDownloading() {
+        isDownloading = false;
     }
 }
