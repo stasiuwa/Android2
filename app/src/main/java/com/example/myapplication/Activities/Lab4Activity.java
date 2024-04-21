@@ -70,12 +70,13 @@ public class Lab4Activity extends AppCompatActivity {
 
         binding.fileInfoButton.setOnClickListener( v -> fileInfoDownload());
         binding.fileDownloadButton.setOnClickListener( v -> startFileManagerService());
-//        binding.cancelDownloadButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FileManagerService.isDownloading = false;
-//            }
-//        });
+
+        binding.cancelDownloadButton.setVisibility(View.INVISIBLE);
+        binding.cancelDownloadButton.setOnClickListener(v -> {
+            FileManagerService.stopDownloading();
+//                Toast.makeText(Lab4Activity.this, "Anulowano pobieranie", Toast.LENGTH_SHORT).show();
+            binding.cancelDownloadButton.setVisibility(View.INVISIBLE);
+        });
 
     }
 
@@ -86,14 +87,19 @@ public class Lab4Activity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPostResume() {
+        if (FileManagerService.isDownloading) binding.cancelDownloadButton.setVisibility(View.VISIBLE);
+        super.onPostResume();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
     }
 
     private void fileInfoDownload() {
-//        nie działa wczytujac link z pola z widoku, na sztywno nie ma problemu ????
-//        String urlAddress = binding.fileAddressEditText.getText().toString();
-        String urlAddress = "https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.36.tar.xz";
+        String urlAddress = binding.fileAddressEditText.getText().toString();
+//        String urlAddress = "https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.36.tar.xz";
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Log.d(lab4TAG, "fileInfoDownload() - adres: " + urlAddress);
         CompletableFuture.supplyAsync( () -> {
@@ -123,9 +129,11 @@ public class Lab4Activity extends AppCompatActivity {
     }
 
     private void startFileManagerService() {
+        binding.cancelDownloadButton.setVisibility(View.VISIBLE);
         Log.d(FileManagerService.TAG, "startFileManagerService() - starting service");
         Intent intent = new Intent(this, FileManagerService.class);
         intent.putExtra("URL", binding.fileAddressEditText.getText().toString());
+        Log.d(FileManagerService.TAG, "startFileManagerService() - URL: " + binding.fileAddressEditText.getText().toString());
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
@@ -162,17 +170,26 @@ public class Lab4Activity extends AppCompatActivity {
         outState.putString("fileSize", binding.fileSizeTextView.getText().toString());
         outState.putString("fileType", binding.fileTypeTextView.getText().toString());
         outState.putString("downloadedBytes", binding.downloadedBytesTextView.getText().toString());
+        Log.d(lab4TAG, "onSaveInstanceState() -  progressBar.getProgress() " + binding.progressBar.getProgress());
         outState.putInt("progress", binding.progressBar.getProgress());
+        outState.putInt("progressMax", binding.progressBar.getMax());
+
         super.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+
+        if (FileManagerService.isDownloading) binding.cancelDownloadButton.setVisibility(View.VISIBLE);
         binding.fileAddressEditText.setText(savedInstanceState.getString("fileAddress"));
         binding.fileSizeTextView.setText(savedInstanceState.getString("fileSize"));
         binding.fileTypeTextView.setText(savedInstanceState.getString("fileType"));
         binding.downloadedBytesTextView.setText(savedInstanceState.getString("downloadedBytes"));
+//        ???? po pierwszym obrocie ma dobre wartosci, po drugim wali 100 i koniec ?
+        Log.d(lab4TAG, "onRestoreInstanceState() -  savedInstance.getInt() " + savedInstanceState.getInt("progress"));
         binding.progressBar.setProgress(savedInstanceState.getInt("progress"));
+        binding.progressBar.setMax(savedInstanceState.getInt("progressMax"));
+
         super.onRestoreInstanceState(savedInstanceState);
     }
 }

@@ -13,6 +13,7 @@ import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -77,7 +78,7 @@ public class FileManagerService extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG,"onDestroy()");
-        Toast.makeText(this, R.string.downloadingEnded, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, R.string.downloadingEnded, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -104,14 +105,15 @@ public class FileManagerService extends Service {
     }
 
     private void downloadFile(String urlAddress) throws IOException {
-        urlAddress = "https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.36.tar.xz";
+        isDownloading = true;
+//        urlAddress = "https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.4.36.tar.xz";
         HttpsURLConnection connection = null;
         DataInputStream inputStream = null;
         FileOutputStream outputStream = null;
         int progress = 0;
         int fileSize = 0;
         try {
-            Log.i(TAG, "/downloadFile() - rozpoczeto pobieranie");
+            Log.i(TAG, "/downloadFile() - started downloading");
             URL address = new URL(urlAddress);
             String fileName = urlAddress.substring(urlAddress.lastIndexOf("/"));
             File outputFile = new File(Environment.getExternalStorageDirectory() + File.separator + "Download" + fileName);
@@ -140,14 +142,15 @@ public class FileManagerService extends Service {
                     sumBytes = 0;
                     int percentage = (int) ((progress/ (float) fileSize) * 100);
                     updateNotification(percentage);
-                    Log.i(TAG,"/downloadFile() - Pobieranie: " + percentage + "%");
+                    Log.i(TAG,"/downloadFile() - Downloading progress: " + percentage + "%");
                     sendBroadcast(progress, fileSize, "Downloading");
                 nextThreshold = (int) (fileSize * (percentageStep / 100));
                 }
             }
-            Log.i(TAG, "/downloadFile() - Pobrano");
+            Log.i(TAG, "/downloadFile() - Downloaded");
             updateNotification(progress);
             sendBroadcast(progress, fileSize, "Done");
+//            Toast.makeText(this, R.string.downloadingEnded, Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             sendBroadcast(progress, fileSize, "ERROR");
             throw new RuntimeException(e);
@@ -194,7 +197,7 @@ public class FileManagerService extends Service {
         Log.d(TAG,"/updateNotification() - aktualizacja powiadomienia pobierania");
         mNotificationManager.notify(NOTIFICATION_ID, getNotification(progress));
     }
-    public void stopDownloading() {
+    public static void stopDownloading() {
         isDownloading = false;
     }
 }

@@ -29,12 +29,15 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:layout_marginBottom="15sp"
-            android:text="@string/fileURL" />
+            android:text="@string/address"
+            />
 
         <EditText
             android:id="@+id/fileAddressEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@string/fileURL"
+            />
     </LinearLayout>
 
     <Button
@@ -127,7 +130,6 @@
 
     <Button
         android:id="@+id/cancelDownloadButton"
-        android:visibility="invisible"
         style="@style/Widget.AppCompat.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
