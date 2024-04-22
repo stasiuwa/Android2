@@ -56,23 +56,4 @@ public class Lab5Activity extends AppCompatActivity {
         });
 
     }
-
-//    @Override
-//    protected void onSaveInstanceState(@NonNull Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        ArrayList<Pair<Path, Paint>> temp = binding.paintSurfaceView.mPaths;
-//        for (Pair<Path, Paint> p : temp) {
-//            Log.d("LAB5", "Path" + p.first + "   Paint: " + p.second);
-//        }
-//        outState.putParcelable("paths", binding.paintSurfaceView.mPaths);
-//    }
-//
-//    @Override
-//    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
-//
-//        binding.paintSurfaceView.mPaths = (ArrayList<Pair<Path, Paint>>) savedInstanceState.getSerializable("paths");
-//        Log.d("LAB5", "mPaths:" + binding.paintSurfaceView.mPaths);
-//        binding.paintSurfaceView.drawCanva();
-//    }
 }

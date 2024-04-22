@@ -68,22 +68,15 @@ public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Call
                         mPath.reset();
                         mPath.moveTo(X, Y);
                         makeDot(X,Y);
-                        Path tempPath = new Path(dotPath);
-                        Paint tempPaint = new Paint(dotPaint);
-                        mPaths.add(new Pair<>(tempPath,tempPaint));
+                        mPaths.add(new Pair<>(new Path(dotPath),new Paint(dotPaint)));
                         break;
                     case MotionEvent.ACTION_MOVE:
                         mPath.lineTo(X, Y);
                         break;
                     case MotionEvent.ACTION_UP:
                         makeDot(X,Y);
-                        tempPath = new Path(dotPath);
-                        tempPaint = new Paint(dotPaint);
-                        mPaths.add(new Pair<>(tempPath,tempPaint));
-
-                        tempPath = new Path(mPath);
-                        tempPaint = new Paint(mPaint);
-                        mPaths.add(new Pair<>(tempPath, tempPaint));
+                        mPaths.add(new Pair<>(new Path(dotPath),new Paint(dotPaint)));
+                        mPaths.add(new Pair<>(new Path(mPath), new Paint(mPaint)));
                         break;
                 }
                 drawCanva();
