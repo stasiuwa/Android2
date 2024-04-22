@@ -25,6 +25,7 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/buttonsMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/paintSurfaceView"
@@ -80,4 +81,14 @@
             android:textSize="15sp"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/savePaintButton"
+        android:layout_width="80sp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5sp"
+        app:layout_constraintTop_toBottomOf="@id/buttonsMenu"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/save"
+        style="@style/Widget.AppCompat.Button.Small"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

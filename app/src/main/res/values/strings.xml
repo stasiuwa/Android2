@@ -38,6 +38,7 @@
     <string name="cancelDownload">Anuluj pobieranie</string>
     <string name="invalidURL">Niepoprawny adres</string>
     <string name="address">Adres:</string>
+    <string name="save">ZAPISZ</string>
     <string-array name="lessonsArray">
         <item>Programowanie</item>
         <item>WF</item>

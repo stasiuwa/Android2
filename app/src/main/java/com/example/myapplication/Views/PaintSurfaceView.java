@@ -1,23 +1,30 @@
 package com.example.myapplication.Views;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.myapplication.Activities.Lab5Activity;
 import com.example.myapplication.R;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Callback {
@@ -57,6 +64,7 @@ public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Call
         mPath = new Path();
         dotPath = new Path();
         mPaths = new ArrayList<>();
+
         setOnTouchListener((v, event) -> {
             synchronized (getHolder()){
                 float X = event.getX();
@@ -77,7 +85,7 @@ public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Call
                         mPaths.add(new Pair<>(new Path(mPath), new Paint(mPaint)));
                         break;
                 }
-                drawCanva();
+                drawCanva(null);
                 return true;
             }
         });
@@ -95,9 +103,9 @@ public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Call
         mPaths.add(new Pair<>(new Path(dotPath),new Paint(dotPaint)));
     }
 
-    public void drawCanva(){
+    public void drawCanva(Canvas temp){
         synchronized (getHolder()){
-            Canvas canvas = getHolder().lockCanvas();
+            Canvas canvas = temp != null ? temp : getHolder().lockCanvas();
             if (canvas != null) {
                 try {
 //                    wyczysc ekran
@@ -111,7 +119,9 @@ public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Call
                         canvas.drawPath(mPath,mPaint);
                     }
                 } finally {
-                    getHolder().unlockCanvasAndPost(canvas);
+                    if (temp == null) {
+                        getHolder().unlockCanvasAndPost(canvas);
+                    }
                 }
             }
         }
@@ -140,6 +150,24 @@ public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Call
                     getHolder().unlockCanvasAndPost(canvas);
                 }
             }
+        }
+    }
+
+    public boolean saveCanva(){
+        String imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+        String filename = "rysunek.jpg";
+
+        Bitmap bitmap = Bitmap.createBitmap(this.getWidth(), this.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas temp = new Canvas(bitmap);
+        drawCanva(temp);
+
+        File file = new File(imagesDir, filename);
+        try {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(file));
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }
