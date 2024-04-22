@@ -2,20 +2,17 @@ package com.example.myapplication.Views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 
@@ -25,10 +22,11 @@ import java.util.ArrayList;
 
 public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Callback {
     private int mColor = R.color.blue;
-    private Paint mPaint;
+    private Paint mPaint, dotPaint;
 
-    private Path mPath;
-    private ArrayList<Pair<Path,Paint>> mPaths;
+    private static final int cirRad = 20;
+    private Path mPath, dotPath;
+    public ArrayList<Pair<Path,Paint>> mPaths;
 
     public PaintSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -46,32 +44,45 @@ public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Call
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
-        mPaint.setStrokeWidth(10);
+        mPaint.setStrokeWidth(15);
+
+        dotPaint = new Paint(mPaint);
+        dotPaint.setStyle(Paint.Style.FILL);
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
         mPath = new Path();
+        dotPath = new Path();
         mPaths = new ArrayList<>();
         setOnTouchListener((v, event) -> {
             synchronized (getHolder()){
                 float X = event.getX();
                 float Y = event.getY();
                 mPaint.setColor(getResources().getColor(mColor));
-
+                dotPaint.setColor(getResources().getColor(mColor));
                 switch (event.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
                         mPath.reset();
                         mPath.moveTo(X, Y);
+                        makeDot(X,Y);
+                        Path tempPath = new Path(dotPath);
+                        Paint tempPaint = new Paint(dotPaint);
+                        mPaths.add(new Pair<>(tempPath,tempPaint));
                         break;
                     case MotionEvent.ACTION_MOVE:
                         mPath.lineTo(X, Y);
                         break;
                     case MotionEvent.ACTION_UP:
-//                            dodaj sciezki z kolorami do tablicy
-                        Path tempPath = new Path(mPath);
-                        Paint tempPaint = new Paint(mPaint);
+                        makeDot(X,Y);
+                        tempPath = new Path(dotPath);
+                        tempPaint = new Paint(dotPaint);
+                        mPaths.add(new Pair<>(tempPath,tempPaint));
+
+                        tempPath = new Path(mPath);
+                        tempPaint = new Paint(mPaint);
                         mPaths.add(new Pair<>(tempPath, tempPaint));
                         break;
                 }
@@ -82,7 +93,17 @@ public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Call
 
     }
 
-    private void drawCanva(){
+    /**
+     * Tworzy kropke o promieniu cirRad
+     * @param X,Y wspołrzedne
+     */
+    private void makeDot(float X, float Y) {
+        dotPath.reset();
+        dotPath.moveTo(X,Y);
+        dotPath.addCircle(X,Y,cirRad,Path.Direction.CW);
+    }
+
+    public void drawCanva(){
         synchronized (getHolder()){
             Canvas canvas = getHolder().lockCanvas();
             if (canvas != null) {

@@ -25,6 +25,7 @@
             android:name=".Activities.Lab5Activity"
             android:exported="false"
             android:parentActivityName=".Activities.MainActivity"
+            android:screenOrientation="portrait"
             />
 
         <activity
