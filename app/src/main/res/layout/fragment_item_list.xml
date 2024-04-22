@@ -8,18 +8,24 @@
     android:layout_height="match_parent"
     tools:context=".Activities.Lab5Activity"
     >
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/paintingList"
-        android:name="com.example.myapplication.Fragments.PaintingFragment"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="70sp"
-        android:layout_marginStart="20sp"
-        app:layoutManager="LinearLayoutManager"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:context=".Fragments.PaintingFragmentList"
-        tools:listitem="@layout/fragment_item" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="70sp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/paintingList"
+            android:name="com.example.myapplication.Fragments.PaintingFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20sp"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:context=".Fragments.PaintingFragmentList"
+            tools:listitem="@layout/fragment_item" />
+
+    </FrameLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

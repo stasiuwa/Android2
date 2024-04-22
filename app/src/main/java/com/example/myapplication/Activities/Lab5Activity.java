@@ -77,16 +77,32 @@ public class Lab5Activity extends AppCompatActivity {
 
         });
         binding.fragmentListButton.setOnClickListener(v -> {
-            binding.lab5submain.setVisibility(View.INVISIBLE);
             paintSurfaceView.clearCanva();
+            binding.lab5submain.setVisibility(View.INVISIBLE);
             PaintingFragmentList fragmentList = new PaintingFragmentList();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main, fragmentList)
-                    .addToBackStack(null)
+                    .addToBackStack("gallery")
                     .commit();
         });
 
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        if (getSupportFragmentManager().getBackStackEntryCount()==1 ){
+            binding.lab5submain.setVisibility(View.VISIBLE);
+            binding.paintSurfaceView.clearCanva();
+        }
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0){
+            getSupportFragmentManager().popBackStack();
+            return true;
+        }
+        return super.onSupportNavigateUp();
+    }
 
+    @Override
+    public void onBackPressed() {
+//        zablokuj cofanie aby nie rozwaLILO backStack() dla toolbara
+    }
 }
