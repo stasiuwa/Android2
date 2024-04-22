@@ -12,6 +12,7 @@ import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.os.Environment;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -21,11 +22,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.myapplication.Activities.Lab5Activity;
+import com.example.myapplication.Fragments.placeholder.PaintingContent;
 import com.example.myapplication.R;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.UUID;
 
 public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Callback {
     private int mColor = R.color.blue;
@@ -105,6 +111,8 @@ public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Call
 
     public void drawCanva(Canvas temp){
         synchronized (getHolder()){
+//            jesli null to rysuje na canvie,
+//            jesli podano argument to przerysowuje z tablicy mPaths na nowa canve z bitmapa do zapisu (funkcja saveCanva())
             Canvas canvas = temp != null ? temp : getHolder().lockCanvas();
             if (canvas != null) {
                 try {
@@ -119,6 +127,8 @@ public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Call
                         canvas.drawPath(mPath,mPaint);
                     }
                 } finally {
+//                    potrzebne bo w przypadku przerysowywania na nowa canve (temp) nie jest potrzebne, a w przypadku rysowania
+//                    na holderze - wymagane
                     if (temp == null) {
                         getHolder().unlockCanvasAndPost(canvas);
                     }
@@ -139,6 +149,9 @@ public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Call
         this.mColor = color;
     }
 
+    /**
+     * Czysci canve - czyli rysuje na niej nowa warstwe oraz tablice ze scieżkami i "farbami"? mPaths
+     */
     public void clearCanva() {
         synchronized (getHolder()) {
             Canvas canvas = getHolder().lockCanvas();
@@ -153,17 +166,36 @@ public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Call
         }
     }
 
-    public boolean saveCanva(){
+    /**
+     * Zapisuje canve do pliku w formacie JPEG w katalogu Pictures urządzenia
+     * @param filename nazwa pliku jak zostanie zapisana canva, funkcja dodaje na koniec ".jpg"
+     * @return czy zapisywanie sie powiodło
+     */
+    public boolean saveCanva(String filename){
         String imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
-        String filename = "rysunek.jpg";
+//        robimy folder LAB5 na rysunki
+        File dir = new File(imagesDir + File.separator + "LAB5");
+        if (!dir.exists()){
+            if (!dir.mkdirs()) {
+                Log.e("ERROR", "Problem przy tworzeniu katalogu " + dir);
+                return false;
+            }
+        }
+//        dodanie folderu do sciezki zapisu pliku
+        imagesDir+=File.separator+"LAB5";
 
+//        co odpalenie apki bez zmiany parametru filename w Lab5Activity będą się nadpisywac, chyba spoko mniej kasowania śmeici z telefonu
+        filename +=  "_" + PaintingContent.getPaintingItems().size() + ".jpg";
+//        filename +=  "rysunek_" + UUID.randomUUID().toString() + ".jpg";
         Bitmap bitmap = Bitmap.createBitmap(this.getWidth(), this.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas temp = new Canvas(bitmap);
         drawCanva(temp);
+        PaintingContent.PaintingItem paintingItem = new PaintingContent.PaintingItem(filename, imagesDir + "/" + filename);
 
         File file = new File(imagesDir, filename);
         try {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(file));
+            PaintingContent.addItem(paintingItem);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

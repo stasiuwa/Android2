@@ -39,6 +39,8 @@
     <string name="invalidURL">Niepoprawny adres</string>
     <string name="address">Adres:</string>
     <string name="save">ZAPISZ</string>
+    <string name="gallery">GALERIA</string>
+    <string name="imgDescription">drawing from Lab5</string>
     <string-array name="lessonsArray">
         <item>Programowanie</item>
         <item>WF</item>
