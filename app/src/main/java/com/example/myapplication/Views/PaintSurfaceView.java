@@ -68,14 +68,12 @@ public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Call
                         mPath.reset();
                         mPath.moveTo(X, Y);
                         makeDot(X,Y);
-                        mPaths.add(new Pair<>(new Path(dotPath),new Paint(dotPaint)));
                         break;
                     case MotionEvent.ACTION_MOVE:
                         mPath.lineTo(X, Y);
                         break;
                     case MotionEvent.ACTION_UP:
                         makeDot(X,Y);
-                        mPaths.add(new Pair<>(new Path(dotPath),new Paint(dotPaint)));
                         mPaths.add(new Pair<>(new Path(mPath), new Paint(mPaint)));
                         break;
                 }
@@ -94,6 +92,7 @@ public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Call
         dotPath.reset();
         dotPath.moveTo(X,Y);
         dotPath.addCircle(X,Y,cirRad,Path.Direction.CW);
+        mPaths.add(new Pair<>(new Path(dotPath),new Paint(dotPaint)));
     }
 
     public void drawCanva(){
