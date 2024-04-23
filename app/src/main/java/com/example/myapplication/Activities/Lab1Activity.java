@@ -144,9 +144,6 @@ public class Lab1Activity extends AppCompatActivity {
                     if (o.getResultCode() == Activity.RESULT_OK) {
                         Intent data = o.getData();
                         buttonGradesFinish.setVisibility(View.VISIBLE);
-//                        It is just a warning as it will never be null if the response is successful.
-//                        You can ignore it or wrap around if(response.body() != null) to remove the warning.
-//                        https://stackoverflow.com/questions/46519388/method-invocation-may-produce-nullpointerexception-retrofit-body
                         buttonGradesFinish.setText(data.getExtras().getString("message"));
                         gradesMessageFinish.setText("ŚREDNIA: " + Float.toString(data.getExtras().getFloat("average")));
 
@@ -158,40 +155,29 @@ public class Lab1Activity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState){
-
         name = findViewById(R.id.name);
         surname = findViewById(R.id.surname);
         grades = findViewById(R.id.grades);
-
         outState.putString("name", name.getText().toString());
         outState.putString("surname", surname.getText().toString());
         outState.putString("grades", grades.getText().toString());
         outState.putBooleanArray("buttonVis", showButton);
-
         buttonGradesFinish = findViewById(R.id.buttonGradesFinish);
         gradesMessageFinish = findViewById(R.id.textViewGradesAverage);
         outState.putString("message", buttonGradesFinish.getText().toString());
         outState.putString("gradesMessage", gradesMessageFinish.getText().toString());
-
-
-
         super.onSaveInstanceState(outState);
     }
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState){
         super.onRestoreInstanceState(savedInstanceState);
-
         name = findViewById(R.id.name);
         surname = findViewById(R.id.surname);
         grades = findViewById(R.id.grades);
-
         name.setText(savedInstanceState.getString("name"));
         surname.setText(savedInstanceState.getString("surname"));
         grades.setText(savedInstanceState.getString("grades"));
         showButton = savedInstanceState.getBooleanArray("buttonVis");
-
-
-
         String message = savedInstanceState.getString("message");
         if (!message.equals("")){
             buttonGradesFinish = findViewById(R.id.buttonGradesFinish);
@@ -200,7 +186,6 @@ public class Lab1Activity extends AppCompatActivity {
             gradesMessageFinish.setText(savedInstanceState.getString("gradesMessage"));
             buttonGradesFinish.setVisibility(View.VISIBLE);
         }
-
         showButton();
     }
 

@@ -34,10 +34,9 @@ import java.util.Locale;
 import java.util.UUID;
 
 public class PaintSurfaceView  extends SurfaceView implements SurfaceHolder.Callback {
+    private static final int cirRad = 20;
     private int mColor = R.color.blue;
     private Paint mPaint, dotPaint;
-
-    private static final int cirRad = 20;
     private Path mPath, dotPath;
     public ArrayList<Pair<Path,Paint>> mPaths;
 

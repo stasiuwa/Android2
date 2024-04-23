@@ -116,7 +116,8 @@ public class FileManagerService extends Service {
             Log.i(TAG, "/downloadFile() - started downloading");
             URL address = new URL(urlAddress);
             String fileName = urlAddress.substring(urlAddress.lastIndexOf("/"));
-            File outputFile = new File(Environment.getExternalStorageDirectory() + File.separator + "Download" + fileName);
+            File outputFile = new File(Environment.getExternalStorageDirectory() +
+                    File.separator + "Download" + fileName);
             if (outputFile.exists()) {
                 outputFile.delete();
             }

@@ -76,9 +76,12 @@ public class PhoneDatabaseActivity extends AppCompatActivity implements PhoneAda
 
     }
 
-    ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+    ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(
+            0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
         @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+        public boolean onMove(@NonNull RecyclerView recyclerView,
+                              @NonNull RecyclerView.ViewHolder viewHolder,
+                              @NonNull RecyclerView.ViewHolder target) {
             return false;
         }
 

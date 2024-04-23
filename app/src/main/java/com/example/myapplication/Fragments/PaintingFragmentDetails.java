@@ -37,18 +37,14 @@ public class PaintingFragmentDetails extends Fragment{
         View view = inflater.inflate(R.layout.fragment_item_details, container, false);
         int position = getArguments().getInt("position");
         PaintingContent.PaintingItem item = PaintingContent.getPaintingItems().get(position);
-        Log.d("ERROR", "PaintingFragmentDetails/onCreateView() - position: " + position);
         Log.d("DETAILS", "POSITION: " + position);
         String imagePath = item.getFilepath();
         Log.d("DETAILS", "filepath: " + imagePath + "  filename: " + item.getFilename());
         ImageView imageView = view.findViewById(R.id.paintingImageView);
         TextView textView = view.findViewById(R.id.imgText);
         textView.setText(imagePath);
-        Log.d("DETAILS", "testwoty przed bitmapo1");
         Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
-        Log.d("DETAILS", "testwoty po bitampo1");
         imageView.setImageBitmap(bitmap);
-        Log.d("DETAILS", "testwoty ppo bitmapo2");
         return view;
     }
 }

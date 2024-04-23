@@ -16,7 +16,6 @@ import java.util.List;
 public interface PhoneDAO{
     @Insert(onConflict = OnConflictStrategy.ABORT)
     void addPhone(PhoneModel phone);
-
     @Query("SELECT * FROM phones")
     LiveData<List<PhoneModel>> getAllPhones();
     @Delete

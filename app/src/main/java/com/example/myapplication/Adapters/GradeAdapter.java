@@ -26,7 +26,6 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.GradeAdapter
         this.mActivity = mActivity;
 
     }
-
     //    wywoływane gdy tworzony jest nowy wiersz
     @NonNull
     @Override
@@ -73,20 +72,15 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.GradeAdapter
         int grade;
         Map<Integer, Integer> radioButtons;
 
-
         public GradeAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
             buttons.setOnCheckedChangeListener(this);
-
             radioButtons = new HashMap<>();
             radioButtons.put(R.id.grade_2, 2);
             radioButtons.put(R.id.grade_3, 3);
             radioButtons.put(R.id.grade_4, 4);
             radioButtons.put(R.id.grade_5, 5);
-
         }
-
-
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             Integer value = radioButtons.get(checkedId);

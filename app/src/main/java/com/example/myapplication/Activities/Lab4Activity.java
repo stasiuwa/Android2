@@ -132,10 +132,12 @@ public class Lab4Activity extends AppCompatActivity {
         Log.d(FileManagerService.TAG, "startFileManagerService() - starting service");
         Intent intent = new Intent(this, FileManagerService.class);
         intent.putExtra("URL", binding.fileAddressEditText.getText().toString());
-        Log.d(FileManagerService.TAG, "startFileManagerService() - URL: " + binding.fileAddressEditText.getText().toString());
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+        Log.d(FileManagerService.TAG, "startFileManagerService() - URL: " +
+                binding.fileAddressEditText.getText().toString());
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    STORAGE_PERMISSION_CODE);
             startService(intent);
             Log.d(lab4TAG, "startFileManagerService() - service started");
         } else {
